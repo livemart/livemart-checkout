@@ -68,3 +68,5 @@ Check `index.html` for details.
 
 - Checkout
   ![Checkout](./resources/screen_1.png)
+
+Copyright © 2021 [LiveMart](https://livemart.xyz)
