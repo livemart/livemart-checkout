@@ -281,7 +281,11 @@ function update_cart(successCallback, failureCallback) {
 
     let params = ``;
     ids.forEach(id => {
-        let quantityParam = document.getElementById(`quantity_${id}`).innerText;
+        let eleProd = document.getElementById(`quantity_${id}`);
+        if (eleProd === null) {
+            return
+        }
+        let quantityParam = eleProd.innerText;
         quantityParam = quantityParam.trim();
         let quantity = Number(quantityParam);
 
