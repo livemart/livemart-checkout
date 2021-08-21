@@ -928,6 +928,7 @@ function load_checkout(locations, paymentMethods, shippingMethods) {
 
 function logout() {
     set_customer_access_token(null);
+    show_login_form();
 }
 
 function place_order() {
