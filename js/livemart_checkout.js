@@ -30,6 +30,10 @@ function get_store_secret() {
 }
 
 function set_customer_access_token(token) {
+    if (token === null) {
+        localStorage.removeItem('livemart_customer_access_token');
+        return
+    }
     localStorage.setItem('livemart_customer_access_token', token);
 }
 
@@ -746,6 +750,14 @@ function load_checkout(locations, paymentMethods, shippingMethods) {
                     </div>
                 </div>
             </div><!--end col-->
+            
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <div class="form">
+                        <button onclick="logout()" class="btn btn-outline-info form-control" id="place_order_btn">Logout</button>
+                    </div>
+                </div>
+            </div><!--end col-->
         </div>
         <div class="row col-md-6">
             <label class="form-label">${is_shipping_required() === true ? 'Shipping Information' : 'Billing Information'}</label>
@@ -912,6 +924,10 @@ function load_checkout(locations, paymentMethods, shippingMethods) {
     };
 
     set_bills();
+}
+
+function logout() {
+    set_customer_access_token(null);
 }
 
 function place_order() {
