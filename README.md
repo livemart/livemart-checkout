@@ -5,7 +5,8 @@ A standalone js library to add livemart checkout to any website.
 #### Install
 
 ```html
-
+<script src="https://cdn.jsdelivr.net/gh/livemart/livemart-checkout@v1.0.0/livemart_checkout.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/livemart/livemart-checkout@v1.0.0/style.css"/>
 ```
 
 #### Dependencies
