@@ -90,7 +90,7 @@ function add_to_cart(itemId) {
                 });
 
                 let itemSelectOption = document.createElement('option');
-                itemSelectOption.value = a.name;
+                itemSelectOption.value = 'none';
                 itemSelectOption.innerText = a.name;
                 itemSelectOption.disabled = true;
                 itemSelectOption.selected = true;
@@ -118,12 +118,7 @@ function add_to_cart(itemId) {
             mainDiv.appendChild(addToCartWithAttribute);
 
             set_required_attributes(itemId, attributeList);
-
-            swal({
-                text: `Choose Attributes for ${productName}`,
-                content: mainDiv,
-                button: false,
-            })
+            showUI(`Choose Attributes for ${productName}`, mainDiv);
         } else {
             update_or_initiate_cart(itemId);
         }
@@ -265,7 +260,7 @@ function check_if_required_attributes_selected(id) {
     for (let i = 0; i < required_attributes.length; i++) {
         let a = required_attributes[i];
         let selected_value = get_required_attribute_value(id, a.id);
-        if (selected_value === null && a.is_required) {
+        if (selected_value === null && selected_value !== 'none' && a.is_required) {
             alert(`Select ${a.name} of ${get_product_info(id).name}`);
             return false;
         }
@@ -336,7 +331,7 @@ function show_cart() {
     };
     sendRequest(payload, function (result) {
         if (result.data !== null) {
-            set_is_shipping_required(result.data.isShippingRequired);
+            set_is_shipping_required(result.data.cart.isShippingRequired);
 
             let cartItems = result.data.cart.cartItems;
             let list = document.createElement('table');
@@ -346,7 +341,7 @@ function show_cart() {
             let listHeadItem = document.createElement('tr');
 
             let listHeadItemName = document.createElement('td');
-            listHeadItemName.innerHTML = 'Product Name';
+            listHeadItemName.innerHTML = 'Name';
             listHeadItem.appendChild(listHeadItemName);
             //
             let listHeadItemPrice = document.createElement('td');
@@ -542,12 +537,7 @@ function show_cart() {
                 tableFooter.appendChild(tr);
                 list.appendChild(tableFooter);
             }
-
-            swal({
-                text: 'Cart Summary',
-                content: list,
-                buttons: false
-            });
+            showUI('Cart Summary', list);
         } else {
             alert('Failed to retrieve cart');
         }
@@ -859,11 +849,7 @@ function load_checkout(locations, paymentMethods, shippingMethods) {
     </form>
     `;
 
-    swal({
-        text: 'Place Order',
-        content: checkoutDiv,
-        buttons: false,
-    });
+    showUI('Place Order', checkoutDiv);
 
     let eleGotoCart = document.getElementById('goto_cart_btn');
     eleGotoCart.onclick = function () {
@@ -1227,11 +1213,7 @@ function show_login_form() {
     </form>
     `;
 
-    swal({
-        text: 'Login',
-        content: loginDiv,
-        buttons: false,
-    });
+    showUI('', loginDiv);
 
     let eleLogin = document.getElementById('login_btn');
     eleLogin.onclick = function (ev) {
@@ -1326,11 +1308,7 @@ function show_register_form() {
     </form>
     `;
 
-    swal({
-        text: 'Register',
-        content: registerDiv,
-        buttons: false,
-    });
+    showUI('', registerDiv);
 
     let eleRegister = document.getElementById('register_btn');
     eleRegister.onclick = function (ev) {
@@ -1392,11 +1370,7 @@ function show_forget_password_form() {
     </form>
     `;
 
-    swal({
-        text: 'Reset Password',
-        content: forgetPasswordDiv,
-        buttons: false,
-    });
+    showUI('', forgetPasswordDiv);
 
     let eleLogin = document.getElementById('login_btn');
     eleLogin.onclick = function (ev) {
@@ -1478,11 +1452,7 @@ function show_change_password_form(email) {
     </form>
     `;
 
-    swal({
-        text: 'Change Password',
-        content: changePasswordDiv,
-        buttons: false,
-    });
+    showUI('', changePasswordDiv);
 
     let eleChangePassword = document.getElementById('change_password_btn');
     eleChangePassword.onclick = function (ev) {
@@ -1613,13 +1583,35 @@ function formatAmount(v) {
 }
 
 function get_api_url() {
-    return 'https://api.livemart.xyz/query';
+    return 'https://api.livemart.store/query';
 }
 
 function get_media_url() {
-    return 'https://livemart.xyz/v1/fs/serve/';
+    return 'https://livemart.store/v1/fs/serve/';
 }
 
 function get_currency() {
     return JSON.parse(localStorage.getItem('store_info')).currency;
+}
+
+function showUI(title, content) {
+    let options = {
+        html: content,
+        showClass: {
+            popup: 'animate__animated animate__fadeInRight'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOut'
+        },
+        showCloseButton: false,
+        showCancelButton: false,
+        showConfirmButton: false,
+        width: "100%",
+        heightAuto: false
+    };
+    if (title !== '') {
+        options.title = title;
+    }
+
+    Swal.fire(options);
 }
